@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.parkingLot.parkingLot.models.VehicleType;
+
 
 @RestController
 @RequestMapping("/parking")
@@ -16,6 +18,11 @@ public class ParkingLotController {
     @Autowired
     public ParkingLotController(ParkingLotService parkingLotService) {
         this.parkingLotService = parkingLotService;
+    }
+
+    @PostMapping("/init")
+    public void initParkingLot(@RequestParam int totalFloors, @RequestParam int spacesPerFloor) {
+        parkingLotService.init(totalFloors, spacesPerFloor);
     }
 
     @PostMapping("/addVehicle")
@@ -36,5 +43,9 @@ public class ParkingLotController {
         }
     }
 
-//    @GetMapping
+    //    @GetMapping
+    @PostMapping("/checkAvailability")
+    public int checkAvailability(@RequestParam int floorNumber, @RequestParam VehicleType vehicleType) {
+        return parkingLotService.checkAvailability(floorNumber, vehicleType);
+    }
 }
